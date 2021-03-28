@@ -3,7 +3,6 @@ const express = require("express");
 const RestaurantController = require("../controllers/restaurant");
 
 const checkAuth = require("../middleware/check-auth");
-const extractFile = require("../middleware/file");
 
 const router = express.Router();
 

@@ -1,40 +1,41 @@
-const Restaurant = require('../models/restaurant');
+const Menu = require('../models/menu');
 
-// Restaurant CRUD - Start
-exports.createRestaurant = (req, res) => {
-    const restaurant = new Restaurant({
+// Menu CRUD - Start
+exports.createMenu = (req, res) => {
+    const menu = new Menu({
         name: req.body.name,
         description: req.body.description,
-        type: req.body.type,
+        restuarantId: req.body.restaurant,
         creator: req.userData.userId
     });
-    restaurant.save()
-        .then(createdRestaurant => {
+
+    menu.save()
+        .then(createdMenu => {
             res.status(201).json({
-                message: "Restaurant added successfully",
+                message: "Menu added successfully",
                 restaurant: {
-                    ...createdRestaurant,
-                    id: createdRestaurant._id
+                    ...createdMenu,
+                    id: createdMenu._id
                 }
             });
         })
         .catch(error => {
             res.status(500).json({
-                message: "Creating a restaurant failed!"
+                message: "Creating a menu failed!"
             });
         });
 }
 
-exports.updataRestaurant = (req, res) => {
-    const restaurant = new Restaurant({
+exports.updataMenu = (req, res) => {
+    const menu = new Menu({
         _id: req.body.id,
         name: req.body.name,
         description: req.body.description,
-        type: req.body.type,
+        restuarantId: req.body.restuarant,
         creator: req.userData.userId
     });
 
-    Restaurant.updateOne({ _id: req.params.id, creator: req.userData.userId }, restaurant)
+    Menu.updateOne({ _id: req.params.id, creator: req.userData.userId }, menu)
         .then(result => {
             if (result.n > 0) {
                 res.status(200).json({ message: "Update successful!" });
@@ -44,29 +45,29 @@ exports.updataRestaurant = (req, res) => {
         })
         .catch(error => {
             res.status(500).json({
-                message: "Couldn't udpate restaurant!"
+                message: "Couldn't udpate menu!"
             });
         });
 }
 
-exports.getRestaurant = (req, res) => {
-    Restaurant.findById(req.params.id)
-        .then(restaurant => {
-            if (restaurant) {
-                res.status(200).json(restaurant);
+exports.getMenu = (req, res) => {
+    Menu.findById(req.params.id)
+        .then(menu => {
+            if (menu) {
+                res.status(200).json(menu);
             } else {
-                res.status(404).json({ message: "Restaurant not found!" });
+                res.status(404).json({ message: "Menu not found!" });
             }
         })
         .catch(error => {
             res.status(500).json({
-                message: "Fetching restaurant failed!"
+                message: "Fetching menu failed!"
             });
         });
 };
 
-exports.deleteRestaurant = (req, res) => {
-    Restaurant.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+exports.deleteMenu = (req, res) => {
+    Menu.deleteOne({ _id: req.params.id, creator: req.userData.userId })
         .then(result => {
             console.log(result);
             if (result.n > 0) {
@@ -77,11 +78,11 @@ exports.deleteRestaurant = (req, res) => {
         })
         .catch(error => {
             res.status(500).json({
-                message: "Deleting restaurant failed!"
+                message: "Deleting menu failed!"
             });
         });
 };
 
-// Restaurant CRUD - End
+// Menu CRUD - End
 
 

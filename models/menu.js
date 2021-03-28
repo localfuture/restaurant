@@ -13,6 +13,11 @@ const menuSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Restaurant",
         required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 
 });

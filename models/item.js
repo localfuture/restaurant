@@ -17,8 +17,12 @@ const itemSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Menu",
         required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
-
 });
 
 module.exports = mongoose.model("Item", itemSchema);
