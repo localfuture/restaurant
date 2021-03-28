@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.post("", checkAuth, RestaurantController.createRestaurant);
 
+router.get("/all", checkAuth, RestaurantController.getAll);
+
 router.put("/:id", checkAuth, RestaurantController.updataRestaurant);
 
 router.get("/:id", checkAuth, RestaurantController.getRestaurant);

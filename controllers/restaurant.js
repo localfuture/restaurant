@@ -85,3 +85,64 @@ exports.deleteRestaurant = (req, res) => {
 // Restaurant CRUD - End
 
 
+//An API to get all restaurants and the associated menus
+exports.getAll = (req,res) => {
+    Restaurant.aggregate([
+        {
+            $lookup: {
+                from: "menus",
+                localField: "_id",
+                foreignField: "restuarantId",
+                as: "menu"
+            }
+        },
+        {
+            $unwind: {
+                path: "$menu",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup:{
+                from:'items',
+                localField:'menu._id',
+                foreignField:'menuId',
+                as:"menu.items"
+            }
+        },
+        {
+            $unwind: {
+                path: "$menu.items",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        // {
+        //     $group: {
+        //         _id: "$_id",
+        //         items: {
+        //             $push: "$menu.items"
+        //         }
+        //     }
+        // },
+        // {
+        //     $group: {
+        //         _id: "$_id",
+        //         menu: {
+        //             $push: {item: "$items"}
+        //         }
+        //     }
+        // }
+    ])
+    .then(restaurant => {
+        if (restaurant) {
+            res.status(200).json(restaurant);
+        } else {
+            res.status(404).json({ message: "Restaurant not found!" });
+        }
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: "Fetching restaurant failed!"
+        });
+    });
+}
