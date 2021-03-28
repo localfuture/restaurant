@@ -13,7 +13,7 @@ exports.createMenu = (req, res) => {
         .then(createdMenu => {
             res.status(201).json({
                 message: "Menu added successfully",
-                restaurant: {
+                menu: {
                     ...createdMenu,
                     id: createdMenu._id
                 }
